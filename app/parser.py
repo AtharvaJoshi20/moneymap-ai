@@ -5,28 +5,57 @@ import pdfplumber
 
 def read_csv_file(file) -> pd.DataFrame:
     """
-    Read Microsoft/Yahoo style balance sheet CSVs and
-    convert them into item/amount format.
+    Read SEC, Microsoft, Yahoo, and WSJ-style balance sheet CSVs.
+    Returns a dataframe with item and amount columns.
     """
+
     try:
         df = pd.read_csv(file, encoding="utf-8")
     except UnicodeDecodeError:
         file.seek(0)
         df = pd.read_csv(file, encoding="latin-1")
 
-    # Remove non-breaking spaces
     df.columns = (
         df.columns.astype(str)
         .str.replace("\u00a0", " ", regex=False)
         .str.strip()
     )
 
-    # Case 1: Already in item/amount format
+    # ---------------------------------------------------------
+    # Case 1 — Already item/amount format
+    # ---------------------------------------------------------
     normalized = [c.lower() for c in df.columns]
+
     if "item" in normalized and "amount" in normalized:
         return df
 
-    # Case 2: Financial export (first column = items, second column = latest year)
+    # ---------------------------------------------------------
+    # Case 2 — WSJ-style multi-year export
+    # ---------------------------------------------------------
+    if "Assets" in str(df.iloc[0, 0]):
+
+        # Second row contains years
+        latest_year_col = 1
+
+        records = []
+
+        for i in range(2, len(df)):
+            item = df.iloc[i, 0]
+            amount = df.iloc[i, latest_year_col]
+
+            if pd.notna(item) and pd.notna(amount):
+                records.append(
+                    {
+                        "item": item,
+                        "amount": amount,
+                    }
+                )
+
+        return pd.DataFrame(records)
+
+    # ---------------------------------------------------------
+    # Case 3 — Microsoft / SEC export
+    # ---------------------------------------------------------
     if len(df.columns) >= 2:
         df = df.iloc[:, [0, 1]]
         df.columns = ["item", "amount"]
