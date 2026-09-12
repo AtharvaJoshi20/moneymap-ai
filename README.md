@@ -586,4 +586,4 @@ This project is licensed under the **MIT License**.
 
 See [`LICENSE`](LICENSE) for details.
 
-**Project Storm**
+**Project Storm • MoneyMap AI - ReImagined**
