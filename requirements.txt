@@ -1,11 +1,14 @@
 streamlit==1.63.0
-pandas==3.0.5
+pandas==2.3.2
+numpy==2.3.3
 plotly==7.0.0
 
-pdfplumber==0.11.10
+yfinance==0.2.65
+
+google-genai==1.39.1
+python-dotenv==1.1.1
+
+PyMuPDF==1.26.4
+pdfplumber==0.11.7
 openpyxl==3.1.5
-
-google-generativeai==0.8.6
-python-dotenv==1.2.3
-
-yfinance==1.7.0
+xlrd==2.0.2

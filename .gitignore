@@ -1,16 +1,32 @@
 # Environment
 .env
 
-# Python cache
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
 
-# Virtual environment
+# Virtual Environment
 .venv/
+venv/
 
-# Streamlit cache
+# Streamlit
 .streamlit/secrets.toml
 
-# OS files
+# IDE
+.vscode/
+.idea/
+
+# OS Files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Python Test Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
